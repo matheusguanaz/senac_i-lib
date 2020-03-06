@@ -1,17 +1,31 @@
+import * as Yup from "yup";
+
 /****************************************
 Rota para cadastrar Usuários:
 
 Campos obrigatórios:
-Nome:
-CPF:
+nome:
+cpf:
 email:
-Senha:
-Tipo: (aluno | funcionario | adm)
+senha:
+tipo: (1 | 2 | 3) onde 1 = aluno, 2 = funcionário e 3 = administrador
 
 *****************************************/
 class CadastrosController {
   async store(req, res) {
-    return res.json({ status: "ok" });
+    const schema = Yup.object().shape({
+      nome: Yup.string().required(),
+      cpf: Yup.string().required(),
+      email: Yup.string().required(),
+      senha: Yup.string().required(),
+      tipo: Yup.number().required()
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: "Validation fails" });
+    }
+
+    return res.json(req.body);
   }
 }
 

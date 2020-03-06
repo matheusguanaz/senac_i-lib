@@ -5,6 +5,6 @@ import CadastrosController from "./src/app/controller/CadastrosController";
 
 const routes = new Router();
 
-routes.get("/cadastros", CadastrosController.store);
+routes.post("/cadastros", CadastrosController.store);
 
 export default routes;
