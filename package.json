@@ -1,0 +1,18 @@
+{
+  "name": "senac_i-lib",
+  "version": "1.0.0",
+  "main": "app/index.js",
+  "repository": "https://github.com/dcapassi/senac_i-lib.git",
+  "author": "Diego Capassi <diego.capassi.moreira@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon ./src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "sucrase": "^3.12.1"
+  }
+}
