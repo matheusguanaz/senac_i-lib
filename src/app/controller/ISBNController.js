@@ -14,7 +14,9 @@ quantidade_livros:
 
 *****************************************/
 class LivrosController {
+  
   async store(req, res) {
+    Isbn.removeAttribute("id");
     const schema = Yup.object().shape({
       isbn: Yup.string().required(),
       nome_livro: Yup.string().required(),

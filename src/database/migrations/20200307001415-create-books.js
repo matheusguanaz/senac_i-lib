@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false
       },
       isbn: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: { model: "isbn", key: "isbn" },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
