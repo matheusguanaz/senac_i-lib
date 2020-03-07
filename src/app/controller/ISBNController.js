@@ -14,7 +14,6 @@ quantidade_livros:
 
 *****************************************/
 class LivrosController {
-  
   async store(req, res) {
     Isbn.removeAttribute("id");
     const schema = Yup.object().shape({
@@ -42,8 +41,8 @@ class LivrosController {
       return res.status(400).json({ error: "Livro já existente" });
     }
 
-    const { nome_livro, autor } = await Isbn.create(req.body);
-    return res.json({ nome_livro, autor, isbn });
+    const { nome_livro, autor, editora } = await Isbn.create(req.body);
+    return res.json({ nome_livro, autor, isbn, editora });
   }
 }
 

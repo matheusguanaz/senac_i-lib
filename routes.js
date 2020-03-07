@@ -6,7 +6,13 @@ import ISBNController from "./src/app/controller/ISBNController";
 
 const routes = new Router();
 
+//Rotas para o Controlador CadastrosController
+routes.get("/cadastros", CadastrosController.index);
+routes.get("/cadastros/:id", CadastrosController.show);
 routes.post("/cadastros", CadastrosController.store);
+
+
+//Rotas para o Controlador ISBNController
 routes.post("/isbn", ISBNController.store);
 
 export default routes;
