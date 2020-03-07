@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import User from "../models/User";
 
 /****************************************
 Rota para cadastrar Usuários:
@@ -22,11 +23,26 @@ class CadastrosController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: "Validation fails" });
+      return res.status(400).json({ error: "Falha no formato" });
     }
 
-    return res.json(req.body);
+    const { email } = req.body;
+
+    let validacao = await User.findAll({
+      where: {
+        email
+      }
+    });
+    console.log(validacao);
+
+    if (!(validacao == false)) {
+      return res.status(400).json({ error: "Email ou CPF já existente" });
+    }
+
+    const { id, nome, cpf } = await User.create(req.body);
+    return res.json({ id, nome, cpf, email });
   }
+  
 }
 
 export default new CadastrosController();
