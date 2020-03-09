@@ -3,6 +3,10 @@
 import { Router } from "express";
 import CadastrosController from "./src/app/controller/CadastrosController";
 import ISBNController from "./src/app/controller/ISBNController";
+import SessionController from "./src/app/controller/SessionController";
+
+//Importação do Middleware para validação de Autenticação JWT
+import authMiddlware from "./src/app/middlewares/authAdm";
 
 const routes = new Router();
 
@@ -14,10 +18,13 @@ routes.put("/cadastros/:id", CadastrosController.update);
 routes.delete("/cadastros/:id", CadastrosController.delete);
 
 //Rotas para o Controlador ISBNController
-routes.get("/isbn", ISBNController.index);
-routes.get("/isbn/:isbn", ISBNController.show);
-routes.post("/isbn", ISBNController.store);
-routes.put("/isbn/:isbn", ISBNController.update);
-routes.delete("/isbn/:isbn", ISBNController.delete);
+routes.get("/isbn", authMiddlware, ISBNController.index);
+routes.get("/isbn/:isbn", authMiddlware, ISBNController.show);
+routes.post("/isbn", authMiddlware, ISBNController.store);
+routes.put("/isbn/:isbn", authMiddlware, ISBNController.update);
+routes.delete("/isbn/:isbn", authMiddlware, ISBNController.delete);
+
+//Rotas para o Controlador Sessão
+routes.get("/sessao", SessionController.show);
 
 export default routes;

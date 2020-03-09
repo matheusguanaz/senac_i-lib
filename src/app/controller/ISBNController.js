@@ -113,11 +113,13 @@ class LivrosController {
      * Garantir que o ISBN seja unico
      * *************************************************************/
 
-    let validacao = await Isbn.findOne({ where: { isbn: req.body.isbn } });
-    console.log("ISBN: " + req.body.isbn);
-    if (!(validacao == null)) {
-      console.log("validacao: " + validacao);
-      return res.status(400).json({ error: "ISBN já existente" });
+    if (req.body.isbn) {
+      let validacao = await Isbn.findOne({ where: { isbn: req.body.isbn } });
+      console.log("ISBN: " + req.body.isbn);
+      if (!(validacao == null)) {
+        console.log("validacao: " + validacao);
+        return res.status(400).json({ error: "ISBN já existente" });
+      }
     }
 
     /**********************************
@@ -125,16 +127,10 @@ class LivrosController {
      * *******************************/
 
     const { nome_livro, autor, editora, idioma } = req.body;
-    let response = await Isbn.update(
-      {
-        isbn: req.body.isbn,
-        nome_livro: nome_livro,
-        autor: autor,
-        editora: editora,
-        idioma: idioma
-      },
-      { returning: true, where: { isbn: req.params.isbn } }
-    );
+    let response = await Isbn.update(req.body, {
+      returning: true,
+      where: { isbn: req.params.isbn }
+    });
 
     return res.json({
       isbn: req.body.isbn,
