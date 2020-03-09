@@ -10,7 +10,8 @@ const routes = new Router();
 routes.get("/cadastros", CadastrosController.index);
 routes.get("/cadastros/:id", CadastrosController.show);
 routes.post("/cadastros", CadastrosController.store);
-
+routes.put("/cadastros/:id", CadastrosController.update);
+routes.delete("/cadastros/:id", CadastrosController.delete);
 
 //Rotas para o Controlador ISBNController
 routes.post("/isbn", ISBNController.store);

@@ -47,7 +47,6 @@ class CadastrosController {
      * *******************************/
     const { id } = req.params;
     let validacao = await User.findByPk(id);
-    console.log(validacao);
 
     if (validacao == null) {
       return res.status(400).json({ error: "Usuário não existe" });
@@ -96,9 +95,88 @@ class CadastrosController {
     return res.json({ id, nome, cpf, email });
   } // fim do método store
 
-  async update(req, res) {} // fim do método udpate
+  async update(req, res) {
+    /**********************************
+     * Validação de entrada
+     * *******************************/
+    const schema = Yup.object().shape({
+      nome: Yup.string(),
+      email: Yup.string().email(),
+      cpf: Yup.string().min(6),
+      senha: Yup.string().when("senhaAntiga", (senhaAntiga, field) =>
+        senhaAntiga ? field.required() : field
+      )
+    });
 
-  async delete(req, res) {} // fim do método udpate
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: "Validation fails" });
+    }
+
+    /**********************************
+     * Verificar se o Id existe
+     * *******************************/
+    const { id } = req.params;
+    let userExistente = await User.findByPk(id);
+
+    if (userExistente == null) {
+      return res.status(400).json({ error: "Usuário não existe" });
+    }
+
+    /****************************************************************
+     * Garantir que o email e CPF sejam unicos
+     * *************************************************************/
+
+    let validacao = await User.findAll({
+      where: {
+        [Op.or]: [{ email: req.body.email }, { cpf: req.body.cpf }]
+      }
+    });
+    if (!(validacao == false)) {
+      return res.status(400).json({ error: "Email ou CPF já existente" });
+    }
+
+    const { senha, senhaAntiga } = req.body;
+
+    if (!(senha && (await userExistente.checkPassword(senhaAntiga)))) {
+      return res.status(400).json({ error: "Senha incorreta" });
+    }
+
+    /**********************************
+     * Update do Usuário
+     * *******************************/
+
+    const { nome, cpf, email } = req.body;
+    await userExistente.update(req.body);
+    return res.json({ nome, cpf, email });
+  } // fim do método udpate
+
+  async delete(req, res) {
+    /**********************************
+     * Validação de entrada
+     * *******************************/
+    const schema = Yup.object().shape({
+      id: Yup.number().required()
+    });
+
+    if (!(await schema.isValid(req.params))) {
+      return res.status(400).json({ error: "Falha no formato" });
+    }
+    /**********************************
+     * Verificar se o Id existe
+     * *******************************/
+    const { id } = req.params;
+    let userExistente = await User.findByPk(id);
+
+    if (userExistente == null) {
+      return res.status(400).json({ error: "Usuário não existe" });
+    }
+
+    /**********************************
+     * Remove o usuário
+     * *******************************/
+    const respostaRemoção = await userExistente.destroy();
+    return res.json({ "usuário removido": id });
+  } // fim do método udpate
 }
 
 export default new CadastrosController();
