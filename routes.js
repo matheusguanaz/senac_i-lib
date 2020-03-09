@@ -14,6 +14,10 @@ routes.put("/cadastros/:id", CadastrosController.update);
 routes.delete("/cadastros/:id", CadastrosController.delete);
 
 //Rotas para o Controlador ISBNController
+routes.get("/isbn", ISBNController.index);
+routes.get("/isbn/:isbn", ISBNController.show);
 routes.post("/isbn", ISBNController.store);
+routes.put("/isbn/:isbn", ISBNController.update);
+routes.delete("/isbn/:isbn", ISBNController.delete);
 
 export default routes;
