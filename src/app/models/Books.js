@@ -4,7 +4,7 @@ class Books extends Model {
   static init(sequelize) {
     super.init(
       {
-        id_livro: Sequelize.STRING,
+        id_livro: Sequelize.NUMBER,
         estado: Sequelize.STRING
       },
       {

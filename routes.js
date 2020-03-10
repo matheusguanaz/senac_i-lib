@@ -6,7 +6,6 @@ import ISBNController from "./src/app/controller/ISBNController";
 import SessionController from "./src/app/controller/SessionController";
 import LivrosController from "./src/app/controller/LivrosController";
 
-
 //Importação do Middleware para validação de Autenticação JWT
 import authMiddlware from "./src/app/middlewares/authAdm";
 const routes = new Router();
@@ -25,14 +24,12 @@ routes.post("/isbn", authMiddlware, ISBNController.store);
 routes.put("/isbn/:isbn", authMiddlware, ISBNController.update);
 routes.delete("/isbn/:isbn", authMiddlware, ISBNController.delete);
 
-
 //Rotas para o Controlador LivrosController
 routes.get("/livros", authMiddlware, LivrosController.index);
 routes.get("/livros/:id_livro", authMiddlware, LivrosController.show);
 routes.post("/livros", authMiddlware, LivrosController.store);
 routes.put("/livros/:id_livro", authMiddlware, LivrosController.update);
 routes.delete("/livros/:id_livro", authMiddlware, LivrosController.delete);
-
 
 //Rotas para o Controlador Sessão
 routes.get("/sessao", SessionController.show);

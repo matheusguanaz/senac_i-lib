@@ -19,7 +19,7 @@ class LivrosController {
      * Mostrar todos os livros cadastrados
      * *******************************/
     const resultado = await Books.findAll({
-      attributes: ["id_livro", "isbn", "estado"]
+      attributes: ["id_livro", "isbn_id", "estado"]
     });
 
     return res.json(resultado);
@@ -33,8 +33,7 @@ class LivrosController {
      * Validação de entrada
      * *******************************/
     const schema = Yup.object().shape({
-      id_livro: Yup.string().required(),
-      isbn: Yup.string().required()
+      id_livro: Yup.string().required()
     });
 
     if (!(await schema.isValid(req.params))) {
@@ -56,8 +55,8 @@ class LivrosController {
      * isbn,
      * estado,
      *********************************/
-    const { isbn, estado } = validacao;
-    return res.json({ id_livro, isbn, estado });
+    const { isbn_id, estado } = validacao;
+    return res.json({ id_livro, isbn_id, estado });
   } //fim do método show
 
   async store(req, res) {
@@ -101,7 +100,7 @@ class LivrosController {
      * Verificar se o Código do Livro existe
      * *******************************/
     let livroExistente = await Books.findOne({
-      where: { isbn: req.params.id_livro }
+      where: { id_livro: req.params.id_livro }
     });
 
     if (livroExistente == null) {
@@ -126,15 +125,15 @@ class LivrosController {
      * Update do Livro
      * *******************************/
 
-    const { id_livro, estado, isbn } = req.body;
+    const { id_livro, estado, isbn_id } = req.body;
     let response = await Books.update(req.body, {
       returning: true,
       where: { id_livro: req.params.id_livro }
     });
 
     return res.json({
-      id_livro: req.body.id_livro,
-      isbn,
+      isbn_id,
+      id_livro,
       estado
     });
   } //fim do método update
@@ -157,7 +156,7 @@ class LivrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id_livro } = req.params;
-    let livroExistente = await Books.findOne({ where: { isbn } });
+    let livroExistente = await Books.findOne({ where: { id_livro } });
 
     if (livroExistente == null) {
       return res.status(400).json({ error: "Código do livro não existe" });
