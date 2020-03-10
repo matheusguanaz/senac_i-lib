@@ -13,7 +13,6 @@ export default async (req, res, next) => {
 
   try {
     const decoded = await promisify(jwt.verify)(token, authConfig.secret);
-    console.log(decoded);
     if (decoded.tipo == "3") {
       req.userId = decoded.id;
       req.userTipo = decoded.tipo;

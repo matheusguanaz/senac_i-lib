@@ -16,7 +16,7 @@ class Books extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Isbn, { foreignKey: "isbn", as: "isbn" });
+    this.belongsTo(models.isbn, { foreignKey: "isbn_id", as: "isbn" });
   }
 }
 

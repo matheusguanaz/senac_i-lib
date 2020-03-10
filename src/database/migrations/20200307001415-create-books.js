@@ -12,11 +12,19 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      isbn: {
+      isbn_id: {
         type: Sequelize.STRING,
         references: { model: "isbn", key: "isbn" },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
+        allowNull: false
+      },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+      updated_at: {
+        type: Sequelize.DATE,
         allowNull: false
       }
     });
