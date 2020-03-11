@@ -1,13 +1,13 @@
 import Sequelize, { Model } from "sequelize";
 
-class Books extends Model {
+class livros extends Model {
   static init(sequelize) {
     super.init(
       {
-        id_livro: Sequelize.NUMBER,
         estado: Sequelize.STRING
       },
       {
+        freezeTableName: true,
         sequelize
       }
     );
@@ -16,8 +16,8 @@ class Books extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.isbn, { foreignKey: "isbn_id", as: "isbn" });
+    this.belongsTo(models.isbn, { foreignKey: "id_isbn", as: "isbn" });
   }
 }
 
-export default Books;
+export default livros;

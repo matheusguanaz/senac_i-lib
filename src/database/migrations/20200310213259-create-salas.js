@@ -2,34 +2,28 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("usuarios", {
+    return queryInterface.createTable("salas", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
       },
-      nome: {
+      estado: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      cpf: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+      numero: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
-      senha_hash: {
+      localizacao: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      tipo: {
+      descricao: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       created_at: {
         type: Sequelize.DATE,
@@ -43,6 +37,6 @@ module.exports = {
   },
 
   down: queryInterface => {
-    return queryInterface.dropTable("usuarios");
+    return queryInterface.dropTable("salas");
   }
 };

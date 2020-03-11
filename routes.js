@@ -26,10 +26,10 @@ routes.delete("/isbn/:isbn", authMiddlware, ISBNController.delete);
 
 //Rotas para o Controlador LivrosController
 routes.get("/livros", authMiddlware, LivrosController.index);
-routes.get("/livros/:id_livro", authMiddlware, LivrosController.show);
+routes.get("/livros/:id", authMiddlware, LivrosController.show);
 routes.post("/livros", authMiddlware, LivrosController.store);
-routes.put("/livros/:id_livro", authMiddlware, LivrosController.update);
-routes.delete("/livros/:id_livro", authMiddlware, LivrosController.delete);
+routes.put("/livros/:id", authMiddlware, LivrosController.update);
+routes.delete("/livros/:id", authMiddlware, LivrosController.delete);
 
 //Rotas para o Controlador Sessão
 routes.get("/sessao", SessionController.show);

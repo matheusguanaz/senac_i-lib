@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import Books from "../models/Books";
+import Books from "../models/Livros";
 
 /****************************************
 Rota para cadastrar Livros:
@@ -19,21 +19,18 @@ class LivrosController {
      * Mostrar todos os livros cadastrados
      * *******************************/
     const resultado = await Books.findAll({
-      attributes: ["id_livro", "isbn_id", "estado"]
+      attributes: ["id", "id_isbn", "estado"]
     });
 
     return res.json(resultado);
   } //fim do método index
 
   async show(req, res) {
-    // Retirar o atributo "id" dos inserts e queries
-    Books.removeAttribute("id");
-
     /**********************************
      * Validação de entrada
      * *******************************/
     const schema = Yup.object().shape({
-      id_livro: Yup.string().required()
+      id: Yup.string().required()
     });
 
     if (!(await schema.isValid(req.params))) {
@@ -43,44 +40,43 @@ class LivrosController {
     /**********************************
      * Verificar se o Id existe
      * *******************************/
-    const { id_livro } = req.params;
-    let validacao = await Books.findOne({ where: { id_livro } });
+    const { id } = req.params;
+    let validacao = await Books.findOne({ where: { id } });
 
     if (validacao == null) {
       return res.status(400).json({ error: "ID do Livro não existe" });
     }
     /**********************************
      * Mostrar ISBN
-     * id_livro,
+     * id,
      * isbn,
      * estado,
      *********************************/
-    const { isbn_id, estado } = validacao;
-    return res.json({ id_livro, isbn_id, estado });
+    const { id_isbn, estado } = validacao;
+    return res.json({ id, id_isbn, estado });
   } //fim do método show
 
   async store(req, res) {
     // Retirar o atributo "id" dos inserts e queries
-    Books.removeAttribute("id");
 
     /**********************************
      * Validação de entrada
      * *******************************/
 
     const schema = Yup.object().shape({
-      id_livro: Yup.string().required(),
-      isbn_id: Yup.string().required()
+      id: Yup.string().required(),
+      id_isbn: Yup.string().required()
     });
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: "Falha no formato" });
     }
 
-    const { id_livro, isbn_id } = req.body;
+    const { id, id_isbn } = req.body;
 
     let validacao = await Books.findAll({
       where: {
-        id_livro
+        id
       }
     });
 
@@ -88,19 +84,16 @@ class LivrosController {
       return res.status(400).json({ error: "Livro já existente" });
     }
 
-    let resposta = await Books.create({ id_livro, isbn_id, estado: 0 });
+    let resposta = await Books.create({ id, id_isbn, estado: 0 });
     return res.json(resposta);
   } //fim do método store
 
   async update(req, res) {
-    // Retirar o atributo "id" dos inserts e queries
-    Books.removeAttribute("id");
-
     /**********************************
      * Verificar se o Código do Livro existe
      * *******************************/
     let livroExistente = await Books.findOne({
-      where: { id_livro: req.params.id_livro }
+      where: { id: req.params.id }
     });
 
     if (livroExistente == null) {
@@ -111,9 +104,9 @@ class LivrosController {
      * Garantir que o Código do Livro seja unico
      * *************************************************************/
 
-    if (req.body.id_livro) {
+    if (req.body.id) {
       let validacao = await Books.findOne({
-        where: { id_livro: req.body.id_livro }
+        where: { id: req.body.id }
       });
       if (!(validacao == null)) {
         console.log("validacao: " + validacao);
@@ -125,28 +118,25 @@ class LivrosController {
      * Update do Livro
      * *******************************/
 
-    const { id_livro, estado, isbn_id } = req.body;
+    const { id, estado, id_isbn } = req.body;
     let response = await Books.update(req.body, {
       returning: true,
-      where: { id_livro: req.params.id_livro }
+      where: { id: req.params.id }
     });
 
     return res.json({
-      isbn_id,
-      id_livro,
+      id_isbn,
+      id,
       estado
     });
   } //fim do método update
 
   async delete(req, res) {
-    // Retirar o atributo "id" dos inserts e queries
-    Books.removeAttribute("id");
-
     /**********************************
      * Validação de entrada
      * *******************************/
     const schema = Yup.object().shape({
-      id_livro: Yup.string().required()
+      id: Yup.string().required()
     });
 
     if (!(await schema.isValid(req.params))) {
@@ -155,8 +145,8 @@ class LivrosController {
     /**********************************
      * Verificar se o Id existe
      * *******************************/
-    const { id_livro } = req.params;
-    let livroExistente = await Books.findOne({ where: { id_livro } });
+    const { id } = req.params;
+    let livroExistente = await Books.findOne({ where: { id } });
 
     if (livroExistente == null) {
       return res.status(400).json({ error: "Código do livro não existe" });
@@ -166,7 +156,7 @@ class LivrosController {
      * Remove o usuário
      * *******************************/
     const respostaRemoção = await livroExistente.destroy();
-    return res.json({ "Livro removido": id_livro });
+    return res.json({ "Livro removido": id });
   } //fim do método delete
 }
 

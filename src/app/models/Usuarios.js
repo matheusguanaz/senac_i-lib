@@ -1,7 +1,7 @@
 import Sequelize, { Model } from "sequelize";
 import bcrypt from "bcryptjs";
 
-class User extends Model {
+class usuarios extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -13,6 +13,7 @@ class User extends Model {
         senha_hash: Sequelize.STRING
       },
       {
+        freezeTableName: true,
         sequelize
       }
     );
@@ -31,4 +32,4 @@ class User extends Model {
   }
 }
 
-export default User;
+export default usuarios;

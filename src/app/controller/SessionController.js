@@ -1,4 +1,4 @@
-import User from "../models/User";
+import User from "../models/Usuarios";
 import jwt from "jsonwebtoken";
 import authConfig from "../../configs/authConfig";
 import * as Yup from "yup";

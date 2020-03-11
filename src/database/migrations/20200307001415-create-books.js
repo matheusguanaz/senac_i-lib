@@ -2,9 +2,9 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("books", {
-      id_livro: {
-        type: Sequelize.INTEGER,
+    return queryInterface.createTable("livros", {
+      id: {
+        type: Sequelize.STRING,
         allowNull: false,
         primaryKey: true
       },
@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      isbn_id: {
+      id_isbn: {
         type: Sequelize.STRING,
         references: { model: "isbn", key: "isbn" },
         onUpdate: "CASCADE",
@@ -31,6 +31,6 @@ module.exports = {
   },
 
   down: queryInterface => {
-    return queryInterface.dropTable("books");
+    return queryInterface.dropTable("livros");
   }
 };
