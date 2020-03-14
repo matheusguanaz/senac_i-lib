@@ -18,7 +18,13 @@ class ISBNController {
      * *******************************/
     const resultado = await Isbn.findAll({
       attributes: ["isbn", "nome_livro", "editora", "idioma"]
-    });
+    })
+      .catch(err => {
+        return res.status(400).json({ erro: err.name });
+      })
+      .catch(err => {
+        return res.status(400).json({ erro: err.name });
+      });
 
     return res.json(resultado);
   } //fim do método index
@@ -42,7 +48,9 @@ class ISBNController {
      * Verificar se o Id existe
      * *******************************/
     const { isbn } = req.params;
-    let validacao = await Isbn.findOne({ where: { isbn } });
+    let validacao = await Isbn.findOne({ where: { isbn } }).catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
 
     if (validacao == null) {
       return res.status(400).json({ error: "ISBN não existe" });
@@ -84,13 +92,19 @@ class ISBNController {
       where: {
         isbn
       }
+    }).catch(err => {
+      return res.status(400).json({ erro: err.name });
     });
 
     if (!(validacao == false)) {
       return res.status(400).json({ error: "Livro já existente" });
     }
 
-    const { nome_livro, autor, editora } = await Isbn.create(req.body);
+    const { nome_livro, autor, editora } = await Isbn.create(req.body).catch(
+      err => {
+        return res.status(400).json({ erro: err.name });
+      }
+    );
     return res.json({ nome_livro, autor, isbn, editora });
   } //fim do método store
 
@@ -103,6 +117,8 @@ class ISBNController {
      * *******************************/
     let userExistente = await Isbn.findOne({
       where: { isbn: req.params.isbn }
+    }).catch(err => {
+      return res.status(400).json({ erro: err.name });
     });
 
     if (userExistente == null) {
@@ -114,8 +130,11 @@ class ISBNController {
      * *************************************************************/
 
     if (req.body.isbn) {
-      let validacao = await Isbn.findOne({ where: { isbn: req.body.isbn } });
-      console.log("ISBN: " + req.body.isbn);
+      let validacao = await Isbn.findOne({
+        where: { isbn: req.body.isbn }
+      }).catch(err => {
+        return res.status(400).json({ erro: err.name });
+      });
       if (!(validacao == null)) {
         console.log("validacao: " + validacao);
         return res.status(400).json({ error: "ISBN já existente" });
@@ -130,6 +149,8 @@ class ISBNController {
     let response = await Isbn.update(req.body, {
       returning: true,
       where: { isbn: req.params.isbn }
+    }).catch(err => {
+      return res.status(400).json({ erro: err.name });
     });
 
     return res.json({
@@ -159,7 +180,9 @@ class ISBNController {
      * Verificar se o Id existe
      * *******************************/
     const { isbn } = req.params;
-    let userExistente = await Isbn.findOne({ where: { isbn } });
+    let userExistente = await Isbn.findOne({ where: { isbn } }).catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
 
     if (userExistente == null) {
       return res.status(400).json({ error: "ISBN não existe" });
@@ -168,7 +191,9 @@ class ISBNController {
     /**********************************
      * Remove o usuário
      * *******************************/
-    const respostaRemoção = await userExistente.destroy();
+    const respostaRemoção = await userExistente.destroy().catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
     return res.json({ "ISBN removido": isbn });
   } //fim do método delete
 }

@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import EmprestimosLivros from "../models/EmprestimosLivros";
+import EmprestimosSalas from "../models/EmprestimosSalas";
 import { startOfHour, parseISO, isBefore, format } from "date-fns";
 import pt from "date-fns/locale/pt";
 import regras from "../../app/regrasNegocio/regrasNegocios";
@@ -11,7 +11,7 @@ Rota para cadastrar Emprestimos de Livros
 
 Campos obrigatórios:
 id_usuario:
-id_livro:
+id_sala:
 vencimento:
 tipo: (1 | 2) onde 1 = ativo, 2 = finalizado
 
@@ -22,17 +22,16 @@ tipo: (1 | 2) onde 1 = ativo, 2 = finalizado
 //update
 //delete
 
-class EmprestimosLivrosController {
+class EmprestimosSalasController {
   async index(req, res) {
     /**********************************
      * Mostrar todos os emprestimos
      * *******************************/
-    const resultado = await EmprestimosLivros.findAll({
-      attributes: ["id", "id_usuario", "id_livro", "estado", "vencimento"]
+    const resultado = await EmprestimosSalas.findAll({
+      attributes: ["id", "id_usuario", "id_sala", "estado", "vencimento"]
     }).catch(err => {
       return res.status(400).json({ erro: err.name });
     });
-
     return res.json(resultado);
   } // fim do método index
 
@@ -52,7 +51,7 @@ class EmprestimosLivrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let validacao = await EmprestimosLivros.findByPk(id).catch(err => {
+    let validacao = await EmprestimosSalas.findByPk(id).catch(err => {
       return res.status(400).json({ erro: err.name });
     });
 
@@ -62,8 +61,8 @@ class EmprestimosLivrosController {
     /**********************************
      * Mostrar emprestimo
      * *******************************/
-    const { id_usuario, id_livro, estado, vencimento } = validacao;
-    return res.json({ id, id_usuario, id_livro, estado, vencimento });
+    const { id_usuario, id_sala, estado, vencimento } = validacao;
+    return res.json({ id, id_usuario, id_sala, estado, vencimento });
   } // fim do método show
 
   async store(req, res) {
@@ -72,7 +71,7 @@ class EmprestimosLivrosController {
      * *******************************/
     const schema = Yup.object().shape({
       id_usuario: Yup.number().required(),
-      id_livro: Yup.number().required()
+      id_sala: Yup.number().required()
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -95,19 +94,19 @@ class EmprestimosLivrosController {
     const ano = diaAgora.getFullYear();
     const {
       id_usuario,
-      id_livro,
+      id_sala,
       estado,
       vencimento
-    } = await EmprestimosLivros.create({
+    } = await EmprestimosSalas.create({
       id: req.body.id,
       id_usuario: req.body.id_usuario,
-      id_livro: req.body.id_livro,
+      id_sala: req.body.id_sala,
       estado: 1,
       vencimento: `${mes}/${dia + regras.diasEmprestimo.alunos}/${ano}`
     }).catch(err => {
       return res.status(400).json({ erro: err.name });
     });
-    return res.json({ id_usuario, id_livro, estado, vencimento });
+    return res.json({ id_usuario, id_sala, estado, vencimento });
   } // fim do método store
 
   async update(req, res) {
@@ -115,11 +114,9 @@ class EmprestimosLivrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let emprestimoExistente = await EmprestimosLivros.findByPk(id).catch(
-      err => {
-        return res.status(400).json({ erro: err.name });
-      }
-    );
+    let emprestimoExistente = await EmprestimosSalas.findByPk(id).catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
 
     if (emprestimoExistente == null) {
       return res.status(400).json({ error: "Id de emprestimo não existe" });
@@ -128,15 +125,15 @@ class EmprestimosLivrosController {
     /**********************************
      * Edita emprestimos
      * *******************************/
-    const { id_usuario, id_livro, estado, vencimento } = req.body;
-    let response = await EmprestimosLivros.update(req.body, {
+    const { id_usuario, id_sala, estado, vencimento } = req.body;
+    let response = await EmprestimosSalas.update(req.body, {
       returning: true,
       where: { id }
     }).catch(err => {
       return res.status(400).json({ erro: err.name });
     });
 
-    return res.json({ id_usuario, id_livro, estado, vencimento });
+    return res.json({ id_usuario, id_sala, estado, vencimento });
   } // fim do método udpate
 
   async delete(req, res) {
@@ -154,11 +151,9 @@ class EmprestimosLivrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let emprestimoExistente = await EmprestimosLivros.findByPk(id).catch(
-      err => {
-        return res.status(400).json({ erro: err.name });
-      }
-    );
+    let emprestimoExistente = await EmprestimosSalas.findByPk(id).catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
 
     if (emprestimoExistente == null) {
       return res.status(400).json({ error: "Id de emprestimo não existe" });
@@ -174,4 +169,4 @@ class EmprestimosLivrosController {
   } // fim do método udpate
 }
 
-export default new EmprestimosLivrosController();
+export default new EmprestimosSalasController();

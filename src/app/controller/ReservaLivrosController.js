@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import EmprestimosLivros from "../models/EmprestimosLivros";
+import ReservaLivros from "../models/ReservaLivros";
 import { startOfHour, parseISO, isBefore, format } from "date-fns";
 import pt from "date-fns/locale/pt";
 import regras from "../../app/regrasNegocio/regrasNegocios";
@@ -7,7 +7,7 @@ import regras from "../../app/regrasNegocio/regrasNegocios";
 import { Op } from "sequelize";
 
 /****************************************
-Rota para cadastrar Emprestimos de Livros
+Rota para cadastrar Reserva de Livros
 
 Campos obrigatórios:
 id_usuario:
@@ -22,12 +22,12 @@ tipo: (1 | 2) onde 1 = ativo, 2 = finalizado
 //update
 //delete
 
-class EmprestimosLivrosController {
+class ReservaLivrosController {
   async index(req, res) {
     /**********************************
-     * Mostrar todos os emprestimos
+     * Mostrar todos as reservas
      * *******************************/
-    const resultado = await EmprestimosLivros.findAll({
+    const resultado = await ReservaLivros.findAll({
       attributes: ["id", "id_usuario", "id_livro", "estado", "vencimento"]
     }).catch(err => {
       return res.status(400).json({ erro: err.name });
@@ -52,15 +52,15 @@ class EmprestimosLivrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let validacao = await EmprestimosLivros.findByPk(id).catch(err => {
+    let validacao = await ReservaLivros.findByPk(id).catch(err => {
       return res.status(400).json({ erro: err.name });
     });
 
     if (validacao == null) {
-      return res.status(400).json({ error: "Id de Emprestimo não existe" });
+      return res.status(400).json({ error: "Id de reserva não existe" });
     }
     /**********************************
-     * Mostrar emprestimo
+     * Mostrar reserva
      * *******************************/
     const { id_usuario, id_livro, estado, vencimento } = validacao;
     return res.json({ id, id_usuario, id_livro, estado, vencimento });
@@ -98,7 +98,7 @@ class EmprestimosLivrosController {
       id_livro,
       estado,
       vencimento
-    } = await EmprestimosLivros.create({
+    } = await ReservaLivros.create({
       id: req.body.id,
       id_usuario: req.body.id_usuario,
       id_livro: req.body.id_livro,
@@ -115,21 +115,19 @@ class EmprestimosLivrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let emprestimoExistente = await EmprestimosLivros.findByPk(id).catch(
-      err => {
-        return res.status(400).json({ erro: err.name });
-      }
-    );
+    let reservaExistente = await ReservaLivros.findByPk(id).catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
 
-    if (emprestimoExistente == null) {
-      return res.status(400).json({ error: "Id de emprestimo não existe" });
+    if (reservaExistente == null) {
+      return res.status(400).json({ error: "Id de reserva não existe" });
     }
 
     /**********************************
-     * Edita emprestimos
+     * Edita reservas
      * *******************************/
     const { id_usuario, id_livro, estado, vencimento } = req.body;
-    let response = await EmprestimosLivros.update(req.body, {
+    let response = await ReservaLivros.update(req.body, {
       returning: true,
       where: { id }
     }).catch(err => {
@@ -154,24 +152,22 @@ class EmprestimosLivrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let emprestimoExistente = await EmprestimosLivros.findByPk(id).catch(
-      err => {
-        return res.status(400).json({ erro: err.name });
-      }
-    );
+    let reservaExistente = await ReservaLivros.findByPk(id).catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
 
-    if (emprestimoExistente == null) {
-      return res.status(400).json({ error: "Id de emprestimo não existe" });
+    if (reservaExistente == null) {
+      return res.status(400).json({ error: "Id de reserva não existe" });
     }
 
     /**********************************
-     * Remove o emprestimo
+     * Remove a reserva
      * *******************************/
-    const respostaRemoção = await emprestimoExistente.destroy().catch(err => {
+    const respostaRemoção = await reservaExistente.destroy().catch(err => {
       return res.status(400).json({ erro: err.name });
     });
-    return res.json({ "Emprestimo removido": id });
+    return res.json({ "Reserva removida": id });
   } // fim do método udpate
 }
 
-export default new EmprestimosLivrosController();
+export default new ReservaLivrosController();

@@ -20,7 +20,11 @@ class SalasController {
      * *******************************/
     const resultado = await Salas.findAll({
       attributes: ["id", "numero", "localizacao", "descricao", "estado"]
-    });
+    }).catch(
+        err => {
+          return res.status(400).json({ erro: err.name });
+        }
+      );
 
     return res.json(resultado);
   } //fim do método index
@@ -41,7 +45,11 @@ class SalasController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let validacao = await Salas.findOne({ where: { id } });
+    let validacao = await Salas.findOne({ where: { id } }).catch(
+        err => {
+          return res.status(400).json({ erro: err.name });
+        }
+      );
 
     if (validacao == null) {
       return res.status(400).json({ error: "ID da Sala não existe" });
@@ -79,7 +87,11 @@ class SalasController {
       where: {
         id
       }
-    });
+    }).catch(
+        err => {
+          return res.status(400).json({ erro: err.name });
+        }
+      );
 
     if (!(validacao == false)) {
       return res.status(400).json({ error: "Sala já existente" });
@@ -91,7 +103,11 @@ class SalasController {
       localizacao,
       descricao,
       estado: 0
-    });
+    }).catch(
+        err => {
+          return res.status(400).json({ erro: err.name });
+        }
+      );
     return res.json(resposta);
   } //fim do método store
 
@@ -101,7 +117,11 @@ class SalasController {
      * *******************************/
     let salaExistente = await Salas.findOne({
       where: { id: req.params.id }
-    });
+    }).catch(
+        err => {
+          return res.status(400).json({ erro: err.name });
+        }
+      );
 
     if (salaExistente == null) {
       return res.status(400).json({ error: "Código da Sala não existe" });
@@ -114,7 +134,11 @@ class SalasController {
     if (req.body.id) {
       let validacao = await Salas.findOne({
         where: { id: req.body.id }
-      });
+      }).catch(
+        err => {
+          return res.status(400).json({ erro: err.name });
+        }
+      );
       if (!(validacao == null)) {
         return res.status(400).json({ error: "Código da sala já existe" });
       }
@@ -128,7 +152,11 @@ class SalasController {
     let response = await Salas.update(req.body, {
       returning: true,
       where: { id: req.params.id }
-    });
+    }).catch(
+        err => {
+          return res.status(400).json({ erro: err.name });
+        }
+      );
 
     return res.json({ id, numero, localizacao, descricao, estado });
   } //fim do método update
@@ -148,7 +176,11 @@ class SalasController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let salaExistente = await Salas.findOne({ where: { id } });
+    let salaExistente = await Salas.findOne({ where: { id } }).catch(
+        err => {
+          return res.status(400).json({ erro: err.name });
+        }
+      );
 
     if (salaExistente == null) {
       return res.status(400).json({ error: "Código da sala não existe" });
@@ -157,7 +189,11 @@ class SalasController {
     /**********************************
      * Remove o usuário
      * *******************************/
-    const respostaRemoção = await salaExistente.destroy();
+    const respostaRemoção = await salaExistente.destroy().catch(
+        err => {
+          return res.status(400).json({ erro: err.name });
+        }
+      );
     return res.json({ "Sala removida": id });
   } //fim do método delete
 }

@@ -20,7 +20,11 @@ class LivrosController {
      * *******************************/
     const resultado = await Books.findAll({
       attributes: ["id", "id_isbn", "estado"]
-    });
+    }).catch(
+      err => {
+        return res.status(400).json({ erro: err.name });
+      }
+    );
 
     return res.json(resultado);
   } //fim do método index
@@ -41,7 +45,11 @@ class LivrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let validacao = await Books.findOne({ where: { id } });
+    let validacao = await Books.findOne({ where: { id } }).catch(
+      err => {
+        return res.status(400).json({ erro: err.name });
+      }
+    );
 
     if (validacao == null) {
       return res.status(400).json({ error: "ID do Livro não existe" });
@@ -76,13 +84,21 @@ class LivrosController {
       where: {
         id
       }
-    });
+    }).catch(
+      err => {
+        return res.status(400).json({ erro: err.name });
+      }
+    );
 
     if (!(validacao == false)) {
       return res.status(400).json({ error: "Livro já existente" });
     }
 
-    let resposta = await Books.create({ id, id_isbn, estado: 0 });
+    let resposta = await Books.create({ id, id_isbn, estado: 0 }).catch(
+      err => {
+        return res.status(400).json({ erro: err.name });
+      }
+    );
     return res.json(resposta);
   } //fim do método store
 
@@ -92,7 +108,11 @@ class LivrosController {
      * *******************************/
     let livroExistente = await Books.findOne({
       where: { id: req.params.id }
-    });
+    }).catch(
+      err => {
+        return res.status(400).json({ erro: err.name });
+      }
+    );
 
     if (livroExistente == null) {
       return res.status(400).json({ error: "Código do Livro não existe" });
@@ -105,7 +125,11 @@ class LivrosController {
     if (req.body.id) {
       let validacao = await Books.findOne({
         where: { id: req.body.id }
-      });
+      }).catch(
+        err => {
+          return res.status(400).json({ erro: err.name });
+        }
+      );
       if (!(validacao == null)) {
         return res.status(400).json({ error: "Código do livro já existe" });
       }
@@ -119,7 +143,11 @@ class LivrosController {
     let response = await Books.update(req.body, {
       returning: true,
       where: { id: req.params.id }
-    });
+    }).catch(
+      err => {
+        return res.status(400).json({ erro: err.name });
+      }
+    );
 
     return res.json({
       id_isbn,
@@ -143,7 +171,11 @@ class LivrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let livroExistente = await Books.findOne({ where: { id } });
+    let livroExistente = await Books.findOne({ where: { id } }).catch(
+      err => {
+        return res.status(400).json({ erro: err.name });
+      }
+    );
 
     if (livroExistente == null) {
       return res.status(400).json({ error: "Código do livro não existe" });
@@ -152,7 +184,11 @@ class LivrosController {
     /**********************************
      * Remove o usuário
      * *******************************/
-    const respostaRemoção = await livroExistente.destroy();
+    const respostaRemoção = await livroExistente.destroy().catch(
+      err => {
+        return res.status(400).json({ erro: err.name });
+      }
+    );
     return res.json({ "Livro removido": id });
   } //fim do método delete
 }

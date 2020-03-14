@@ -26,6 +26,8 @@ class CadastrosController {
      * *******************************/
     const resultado = await User.findAll({
       attributes: ["id", "nome", "cpf", "email"]
+    }).catch(err => {
+      return res.status(400).json({ erro: err.name });
     });
     return res.json(resultado);
   } // fim do método index
@@ -46,7 +48,9 @@ class CadastrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let validacao = await User.findByPk(id);
+    let validacao = await User.findByPk(id).catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
 
     if (validacao == null) {
       return res.status(400).json({ error: "Usuário não existe" });
@@ -82,6 +86,8 @@ class CadastrosController {
       where: {
         [Op.or]: [{ email: req.body.email }, { cpf: req.body.cpf }]
       }
+    }).catch(err => {
+      return res.status(400).json({ erro: err.name });
     });
     if (!(validacao == false)) {
       return res.status(400).json({ error: "Email ou CPF já existente" });
@@ -91,7 +97,9 @@ class CadastrosController {
      * Gravar dados no Banco
      * *******************************/
 
-    const { id, nome, cpf, email } = await User.create(req.body);
+    const { id, nome, cpf, email } = await User.create(req.body).catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
     return res.json({ id, nome, cpf, email });
   } // fim do método store
 
@@ -116,7 +124,9 @@ class CadastrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let userExistente = await User.findByPk(id);
+    let userExistente = await User.findByPk(id).catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
 
     if (userExistente == null) {
       return res.status(400).json({ error: "Usuário não existe" });
@@ -130,6 +140,8 @@ class CadastrosController {
       where: {
         [Op.or]: [{ email: req.body.email }, { cpf: req.body.cpf }]
       }
+    }).catch(err => {
+      return res.status(400).json({ erro: err.name });
     });
     if (!(validacao == false)) {
       return res.status(400).json({ error: "Email ou CPF já existente" });
@@ -146,7 +158,9 @@ class CadastrosController {
      * *******************************/
 
     const { nome, cpf, email } = req.body;
-    await userExistente.update(req.body);
+    await userExistente.update(req.body).catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
     return res.json({ nome, cpf, email });
   } // fim do método udpate
 
@@ -165,7 +179,9 @@ class CadastrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let userExistente = await User.findByPk(id);
+    let userExistente = await User.findByPk(id).catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
 
     if (userExistente == null) {
       return res.status(400).json({ error: "Usuário não existe" });
@@ -174,7 +190,9 @@ class CadastrosController {
     /**********************************
      * Remove o usuário
      * *******************************/
-    const respostaRemoção = await userExistente.destroy();
+    const respostaRemoção = await userExistente.destroy().catch(err => {
+      return res.status(400).json({ erro: err.name });
+    });
     return res.json({ "usuário removido": id });
   } // fim do método udpate
 }
