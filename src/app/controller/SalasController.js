@@ -1,25 +1,25 @@
 import * as Yup from "yup";
-import Books from "../models/Livros";
+import Salas from "../models/Salas";
 
 /****************************************
 Rota para cadastrar Livros:
 
 Campos obrigatórios:
-id-livro
-
-isbn:
+id
+numero
+localizacao
 
 Opcionais:
-estado:
+descricao
 
 *****************************************/
-class LivrosController {
+class SalasController {
   async index(req, res) {
     /**********************************
      * Mostrar todos os livros cadastrados
      * *******************************/
-    const resultado = await Books.findAll({
-      attributes: ["id", "id_isbn", "estado"]
+    const resultado = await Salas.findAll({
+      attributes: ["id", "numero", "localizacao", "descricao", "estado"]
     });
 
     return res.json(resultado);
@@ -41,19 +41,21 @@ class LivrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let validacao = await Books.findOne({ where: { id } });
+    let validacao = await Salas.findOne({ where: { id } });
 
     if (validacao == null) {
-      return res.status(400).json({ error: "ID do Livro não existe" });
+      return res.status(400).json({ error: "ID da Sala não existe" });
     }
     /**********************************
-     * Mostrar ISBN
-     * id,
-     * isbn,
-     * estado,
+     * Mostrar Sala
+     *id
+     *numero
+     *localizacao
+     *descricao
+     *estado
      *********************************/
-    const { id_isbn, estado } = validacao;
-    return res.json({ id, id_isbn, estado });
+    const { numero, localizacao, descricao, estado } = validacao;
+    return res.json({ id, numero, localizacao, descricao, estado });
   } //fim do método show
 
   async store(req, res) {
@@ -62,70 +64,73 @@ class LivrosController {
      * *******************************/
 
     const schema = Yup.object().shape({
-      id: Yup.string().required(),
-      id_isbn: Yup.string().required()
+      id: Yup.number().required(),
+      numero: Yup.number().required(),
+      localizacao: Yup.string().required()
     });
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: "Falha no formato" });
     }
 
-    const { id, id_isbn } = req.body;
+    const { id, localizacao, numero, descricao } = req.body;
 
-    let validacao = await Books.findAll({
+    let validacao = await Salas.findAll({
       where: {
         id
       }
     });
 
     if (!(validacao == false)) {
-      return res.status(400).json({ error: "Livro já existente" });
+      return res.status(400).json({ error: "Sala já existente" });
     }
 
-    let resposta = await Books.create({ id, id_isbn, estado: 0 });
+    let resposta = await Salas.create({
+      id,
+      numero,
+      localizacao,
+      descricao,
+      estado: 0
+    });
     return res.json(resposta);
   } //fim do método store
 
   async update(req, res) {
     /**********************************
-     * Verificar se o Código do Livro existe
+     * Verificar se o Código da Sala existe
      * *******************************/
-    let livroExistente = await Books.findOne({
+    let salaExistente = await Salas.findOne({
       where: { id: req.params.id }
     });
 
-    if (livroExistente == null) {
-      return res.status(400).json({ error: "Código do Livro não existe" });
+    if (salaExistente == null) {
+      return res.status(400).json({ error: "Código da Sala não existe" });
     }
 
     /****************************************************************
-     * Garantir que o Código do Livro seja unico
+     * Garantir que o Código da Sala seja unico
      * *************************************************************/
 
     if (req.body.id) {
-      let validacao = await Books.findOne({
+      let validacao = await Salas.findOne({
         where: { id: req.body.id }
       });
       if (!(validacao == null)) {
-        return res.status(400).json({ error: "Código do livro já existe" });
+        return res.status(400).json({ error: "Código da sala já existe" });
       }
     }
 
     /**********************************
-     * Update do Livro
+     * Update da Sala
      * *******************************/
 
-    const { id, estado, id_isbn } = req.body;
-    let response = await Books.update(req.body, {
+    const { id, numero, localizacao, descricao, estado } = req.body;
+    let response = await Salas.update(req.body, {
       returning: true,
       where: { id: req.params.id }
     });
 
-    return res.json({
-      id_isbn,
-      id,
-      estado
-    });
+    return res.json({ id, numero, localizacao, descricao, estado });
   } //fim do método update
 
   async delete(req, res) {
@@ -143,18 +148,18 @@ class LivrosController {
      * Verificar se o Id existe
      * *******************************/
     const { id } = req.params;
-    let livroExistente = await Books.findOne({ where: { id } });
+    let salaExistente = await Salas.findOne({ where: { id } });
 
-    if (livroExistente == null) {
-      return res.status(400).json({ error: "Código do livro não existe" });
+    if (salaExistente == null) {
+      return res.status(400).json({ error: "Código da sala não existe" });
     }
 
     /**********************************
      * Remove o usuário
      * *******************************/
-    const respostaRemoção = await livroExistente.destroy();
-    return res.json({ "Livro removido": id });
+    const respostaRemoção = await salaExistente.destroy();
+    return res.json({ "Sala removida": id });
   } //fim do método delete
 }
 
-export default new LivrosController();
+export default new SalasController();

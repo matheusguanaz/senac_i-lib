@@ -6,6 +6,12 @@ import ISBNController from "./src/app/controller/ISBNController";
 import SessionController from "./src/app/controller/SessionController";
 import LivrosController from "./src/app/controller/LivrosController";
 import EmprestimosLivrosController from "./src/app/controller/EmprestimosLivrosController";
+import SalasController from "./src/app/controller/SalasController";
+//import EmprestimosLivros from "./src/app/controller/EmprestimosLivrosController";
+//import EmprestimosSalas from "./src/app/controller/EmprestimosSalasController";
+//import ReservaLivros from "./src/app/controller/ReservaLivrosController";
+//import ReservaSalas from "./src/app/controller/ReservaSalasController";
+//import Suspensoes from "./src/app/controller/SuspensoesController";
 
 //Importação do Middleware para validação de Autenticação JWT
 import authMiddlware from "./src/app/middlewares/authAdm";
@@ -32,12 +38,27 @@ routes.post("/livros", authMiddlware, LivrosController.store);
 routes.put("/livros/:id", authMiddlware, LivrosController.update);
 routes.delete("/livros/:id", authMiddlware, LivrosController.delete);
 
+//Rotas para o Controlador SalasController
+routes.get("/salas", authMiddlware, SalasController.index);
+routes.get("/salas/:id", authMiddlware, SalasController.show);
+routes.post("/salas", authMiddlware, SalasController.store);
+routes.put("/salas/:id", authMiddlware, SalasController.update);
+routes.delete("/salas/:id", authMiddlware, SalasController.delete);
+
 //Rotas para o Controlador EmprestimosLivrosController
 routes.get("/emprestimos", authMiddlware, EmprestimosLivrosController.index);
-routes.get("/emprestimos", authMiddlware, EmprestimosLivrosController.index);
+routes.get("/emprestimos/:id", authMiddlware, EmprestimosLivrosController.show);
 routes.post("/emprestimos", authMiddlware, EmprestimosLivrosController.store);
-routes.put("/emprestimos/:id", authMiddlware, EmprestimosLivrosController.update);
-routes.delete("/emprestimos/:id", authMiddlware, EmprestimosLivrosController.delete);
+routes.put(
+  "/emprestimos/:id",
+  authMiddlware,
+  EmprestimosLivrosController.update
+);
+routes.delete(
+  "/emprestimos/:id",
+  authMiddlware,
+  EmprestimosLivrosController.delete
+);
 
 //Rotas para o Controlador Sessão
 routes.get("/sessao", SessionController.show);

@@ -2,6 +2,7 @@ import * as Yup from "yup";
 import EmprestimosLivros from "../models/EmprestimosLivros";
 import { startOfHour, parseISO, isBefore, format } from "date-fns";
 import pt from "date-fns/locale/pt";
+import regras from "../../app/regrasNegocio/regrasNegocios";
 
 import { Op } from "sequelize";
 
@@ -22,8 +23,6 @@ tipo: (1 | 2) onde 1 = ativo, 2 = finalizado
 //delete
 
 class EmprestimosLivrosController {
-  diasE = 7;
-
   async index(req, res) {
     /**********************************
      * Mostrar todos os emprestimos
@@ -63,7 +62,6 @@ class EmprestimosLivrosController {
   } // fim do método show
 
   async store(req, res) {
-    var diasEmprestimo = 7;
     /**********************************
      * Validação de entrada
      * *******************************/
@@ -80,17 +78,16 @@ class EmprestimosLivrosController {
      * Garantir que usuario possa pegar livros emprestados
      * *************************************************************/
 
+    // Os métodos de verificação serão criados
+
     /**********************************
      * Gravar dados no Banco
      * *******************************/
 
     const diaAgora = new Date();
-    const dia = diaAgora.getDay();
-    const mes = diaAgora.getMonth();
+    const dia = diaAgora.getDate();
+    const mes = diaAgora.getMonth() + 1;
     const ano = diaAgora.getFullYear();
-
-    console.log(`Hoje é dia ${dia}/${mes}/${ano}`);
-
     const {
       id_usuario,
       id_livro,
@@ -100,13 +97,32 @@ class EmprestimosLivrosController {
       id_usuario: req.body.id_usuario,
       id_livro: req.body.id_livro,
       estado: 1,
-      vencimento: `${dia + diasEmprestimo}/${mes}/${ano}`
+      vencimento: `${mes}/${dia + regras.diasEmprestimo.alunos}/${ano}`
     });
     return res.json({ id_usuario, id_livro, estado, vencimento });
   } // fim do método store
 
   async update(req, res) {
-    return res.json({ status: "Em desenvolvimento." });
+    /**********************************
+     * Verificar se o Id existe
+     * *******************************/
+    const { id } = req.params;
+    let emprestimoExistente = await EmprestimosLivros.findByPk(id);
+
+    if (emprestimoExistente == null) {
+      return res.status(400).json({ error: "Id de emprestimo não existe" });
+    }
+
+    /**********************************
+     * Edita emprestimos
+     * *******************************/
+    const { id_usuario, id_livro, estado, vencimento } = req.body;
+    let response = await EmprestimosLivros.update(req.body, {
+      returning: true,
+      where: { id }
+    });
+
+    return res.json({ id_usuario, id_livro, estado, vencimento });
   } // fim do método udpate
 
   async delete(req, res) {
