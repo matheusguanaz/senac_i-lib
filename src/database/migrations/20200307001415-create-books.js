@@ -17,7 +17,7 @@ module.exports = {
         references: { model: "isbn", key: "isbn" },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
-        allowNull: false
+        allowNull: true
       },
       created_at: {
         type: Sequelize.DATE,

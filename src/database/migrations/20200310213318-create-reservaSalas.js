@@ -14,14 +14,14 @@ module.exports = {
         references: { model: "salas", key: "id" },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
-        allowNull: false
+        allowNull: true
       },
       id_usuario: {
         type: Sequelize.INTEGER,
         references: { model: "usuarios", key: "id" },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
-        allowNull: false
+        allowNull: true
       },
       estado: {
         type: Sequelize.INTEGER,

@@ -14,14 +14,14 @@ module.exports = {
         references: { model: "usuarios", key: "id" },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
-        allowNull: false
+        allowNull: true
       },
       id_livro: {
         type: Sequelize.STRING,
         references: { model: "livros", key: "id" },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
-        allowNull: false
+        allowNull: true
       },
       estado: {
         type: Sequelize.STRING,
