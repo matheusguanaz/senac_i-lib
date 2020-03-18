@@ -72,7 +72,7 @@ class ReservaLivrosController {
      * *******************************/
     const schema = Yup.object().shape({
       id_usuario: Yup.number().required(),
-      id_livro: Yup.number().required()
+      id_livro: Yup.string().required()
     });
 
     if (!(await schema.isValid(req.body))) {

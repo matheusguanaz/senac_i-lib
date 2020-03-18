@@ -13,6 +13,9 @@ idioma:
 *****************************************/
 class ISBNController {
   async index(req, res) {
+    // Retirar o atributo "id" dos inserts e queries
+    Isbn.removeAttribute("id");
+
     /**********************************
      * Mostrar todos os usuarios
      * *******************************/
@@ -68,6 +71,11 @@ class ISBNController {
   } //fim do método show
 
   async store(req, res) {
+    //Apenas permite operação de usuários administradores
+    if (res.tipo != "3") {
+      return res.status(400).json({ erro: "Usuário deve ser administrador!" });
+    }
+
     // Retirar o atributo "id" dos inserts e queries
     Isbn.removeAttribute("id");
 
@@ -109,6 +117,11 @@ class ISBNController {
   } //fim do método store
 
   async update(req, res) {
+    //Apenas permite operação de usuários administradores
+    if (res.tipo != "3") {
+      return res.status(400).json({ erro: "Usuário deve ser administrador!" });
+    }
+
     // Retirar o atributo "id" dos inserts e queries
     Isbn.removeAttribute("id");
 
@@ -163,6 +176,11 @@ class ISBNController {
   } //fim do método update
 
   async delete(req, res) {
+    //Apenas permite operação de usuários administradores
+    if (res.tipo != "3") {
+      return res.status(400).json({ erro: "Usuário deve ser administrador!" });
+    }
+
     // Retirar o atributo "id" dos inserts e queries
     Isbn.removeAttribute("id");
 

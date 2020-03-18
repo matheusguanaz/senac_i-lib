@@ -13,7 +13,7 @@ import ReservaSalasController from "./src/app/controller/ReservaSalasController"
 import SuspensoesController from "./src/app/controller/SuspensoesController";
 
 //Importação do Middleware para validação de Autenticação JWT
-import authMiddlware from "./src/app/middlewares/authAdm";
+import authMiddlware from "./src/app/middlewares/auth";
 const routes = new Router();
 
 //Rotas para o Controlador CadastrosController

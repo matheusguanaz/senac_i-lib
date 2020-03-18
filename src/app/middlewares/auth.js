@@ -13,15 +13,14 @@ export default async (req, res, next) => {
 
   try {
     const decoded = await promisify(jwt.verify)(token, authConfig.secret);
-    if (decoded.tipo == "3") {
-      req.userId = decoded.id;
-      req.userTipo = decoded.tipo;
+    if (decoded) {
+      res.id = decoded.id;
+      res.tipo = decoded.tipo;
       return next();
     }
-    return res.status(401).json({ error: "Usuário deve der Administrador" });
+    return res.status(401).json({ error: "Token invalido" });
   } catch (err) {
-    return res.status(401).json({ error: "Token invalid" });
+    return res.status(401).json({ error: "Token invalido" });
   }
-
   next();
 };
