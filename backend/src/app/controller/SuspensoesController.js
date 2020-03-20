@@ -77,16 +77,6 @@ class SuspensoesController {
       return res.status(400).json({ error: "Falha no formato" });
     }
 
-    /****************************************************************
-     * Garantir que usuario possa pegar livros emprestados
-     * *************************************************************/
-
-    // Os métodos de verificação serão criados
-
-    /**********************************
-     * Gravar dados no Banco
-     * *******************************/
-
     const diaAgora = new Date();
     const dia = diaAgora.getDate();
     const mes = diaAgora.getMonth() + 1;
@@ -95,7 +85,7 @@ class SuspensoesController {
       id: req.body.id,
       id_usuario: req.body.id_usuario,
       estado: 1,
-      vencimento: `${mes}/${dia + regras.diasEmprestimo.alunos}/${ano}`
+      vencimento: `${mes}/${dia + regras.diasSuspensao.alunos}/${ano}`
     }).catch(err => {
       return res.status(400).json({ erro: err.name });
     });
