@@ -1,0 +1,62 @@
+###As regras abaixo devem ser implementadas:
+
+Quem pode alugar livros?
+
+Alunos, docentes e funcionários – Isentos de taxa
+If [‘Aluno’,’Docente’,’Funcionário’] == 1:
+	Is_inscrito = 1
+Ex-alunos e público externo – Pagamento de Taxa (10 Reais Mensal, 50 Semestral, 100 Anual).
+If inscrição_paga == 1:
+	Is_inscrito = 1
+Else:
+	Is_inscrito = 0
+Funcionário SESC e prestador de serviços para o SENAC – Isento
+If is_sesc == 1:
+	Is_inscrito = 1
+Else:
+	Is_inscrito = 0
+Idosos, deficientes visuais, pessoas da comunidade – Isentos
+If idade > 60 | is_deficiente_visual == 1 | is_comunidade == 1:
+	Is_inscrito = 1
+Else:
+	Is_inscrito = 0
+ 
+O empréstimo é permitido apenas para usuarios inscritos que precisam se identificar (CPF) ou biometria.
+
+• A reserva é realizada de acordo com a indisponibilidade de livros no acervo;
+If empréstimo == 1:
+Reserva == 1:
+Else:
+Emprestar
+
+
+
+• A espera para retirada de livro reservado é de 2 (dois) dias úteis;
+While(days <= 2)
+	If is_emprestimo == 1:
+		Break
+	Else:
+		Days = days + 1
+
+• A renovação de materiais pode ser recusada pelo sistema em casos de atraso e suspensão;
+• Materiais com tarja vermelha ou preta são destinados à consulta local;
+• O empréstimo entre bibliotecas de outras instituições deve ser solicitado na biblioteca onde o usuário está matriculado e obedecer às normas de utilização estabelecidas pela instituição parceira.  
+
+Empréstimo para alunos EAD
+Para empréstimo do acervo físico, os alunos devem entrar em contato diretamente com a biblioteca do Centro Universitário Senac - Santo Amaro pelo e-mail: santoamaro.biblioteca@sp.senac.br.
+Atraso:
+Atraso na devolução leva a:
+	1 dia de suspensão para cada dia de atraso com limite de 30 dias de suspensão, isto é, dias corridos.
+
+Se o usuário atrasar ocorrerá o seguinte:
+Suspensão no empréstimo, consulta e reservas.
+Envio de cobrança por e-mail.
+Medidas legais em última instância.
+
+Reposição:
+	Caso o usuário perca o livro ele precisará ser reposto.
+	Se o mesmo for vítima de furto também.
+	Danificação de capa, folhas e anexo: Rabiscos, páginas arrancadas, manchas, chuva, entre outros.
+A suspensão da reposição ocorre quando:
+Um atestado médico referente aos dias suspensos é apresentado.
+Boletim de ocorrência constando o título que foi furtado.
