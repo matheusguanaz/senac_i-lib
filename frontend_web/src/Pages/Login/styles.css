@@ -1,12 +1,19 @@
 @font-face {
   font-family: OpenSans;
-  src: url("../src/fonts/OpenSans-Regular.ttf");
+  src: url("../../../src/fonts/OpenSans-Regular.ttf");
 }
 
 * {
+  border: 0px;
   padding: 0px;
   margin: 0px;
   align-items: center;
+}
+
+#mensagemFalhaAutenticacao {
+  color: red;
+  font-family: OpenSans;
+  font-size: 12px;
 }
 
 .Container {
@@ -16,13 +23,14 @@
   border: 1px solid #cccccc;
   width: 50%;
   position: absolute;
-  top: 12%;
+  top: 8%;
   left: 25%;
 }
 
 h1 {
   font-family: OpenSans;
-  font-size: 20px;
+  font-size: 15px;
+  margin-left: 5%;
   text-align: center;
   color: #044c8c;
 }
@@ -30,16 +38,16 @@ h1 {
 img {
   display: block;
   padding: 5% 10% 1% 5%;
-  width: 50%;
+  width: 45%;
   height: 50%;
-  margin-left: auto;
+  margin-left: 25%;
   margin-right: auto;
 }
 
 a {
   text-align: center;
   font-family: OpenSans;
-  font-size: 15px;
+  font-size: 10px;
   line-height: 22px;
   text-align: center;
   color: #044c8c;
@@ -48,11 +56,11 @@ a {
 p {
   text-align: center;
   font-family: OpenSans;
-  font-size: 15px;
+  font-size: 12px;
   line-height: 22px;
   text-align: center;
   color: #044c8c;
-  padding: 0% 5% 3% 5%;
+  padding: 0% 5% 10% 5%;
 }
 
 form {
@@ -67,7 +75,8 @@ form {
 input {
   outline: none;
   font-family: OpenSans;
-  font-size: 15px;
+  width: 40%;
+  font-size: 12px;
   border-style: none;
   border-bottom: 1px solid #fd5f00;
   text-align: center;
@@ -75,14 +84,16 @@ input {
 }
 
 #loginBotao {
+  font-size: 15px;
   color: #044c8c;
   margin-bottom: 2%;
+  margin-top: 2%;
   background: #ffffff;
   border: 1px solid #fd5f00;
   box-sizing: border-box;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  width: 35%;
+  width: 40%;
   padding: 1%;
   cursor: pointer;
 }

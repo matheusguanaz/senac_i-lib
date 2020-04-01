@@ -81,6 +81,6 @@ routes.delete("/suspensoes/:id",authMiddlware,SuspensoesController.delete);
 
 
 //Rotas para o Controlador Sessão
-routes.get("/sessao", SessionController.show);
+routes.post("/sessao", SessionController.show);
 
 export default routes;
