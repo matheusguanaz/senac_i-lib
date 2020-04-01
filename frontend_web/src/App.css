@@ -1,0 +1,43 @@
+@font-face {
+  font-family: OpenSans;
+  src: url("../src/fonts/OpenSans-Regular.ttf");
+}
+
+* {
+  padding: 0px;
+  margin: 0px;
+  align-items: center;
+}
+h1 {
+  font-family: OpenSans;
+  font-size: 18px;
+  text-align: center;
+  color: #044c8c;
+}
+
+img {
+  display: block;
+  width: 30%;
+  height: 30%;
+  margin-left: auto;
+  margin-right: auto;
+}
+a,
+p {
+  text-align: center;
+  font-family: OpenSans;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
+  color: #044c8c;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  border-bottom: 1px solid #fd5f00;
+  text-align: center;
+}
