@@ -1,0 +1,95 @@
+@font-face {
+  font-family: OpenSans;
+  src: url("../src/fonts/OpenSans-Regular.ttf");
+}
+
+* {
+  padding: 0px;
+  margin: 0px;
+  align-items: center;
+}
+
+.Container {
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  padding: 5% 5% 5% 5%;
+  border: 1px solid #cccccc;
+  width: 50%;
+  position: absolute;
+  top: 12%;
+  left: 25%;
+}
+
+h1 {
+  font-family: OpenSans;
+  font-size: 20px;
+  text-align: center;
+  color: #044c8c;
+}
+
+img {
+  display: block;
+  padding: 5% 10% 1% 5%;
+  width: 50%;
+  height: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a {
+  text-align: center;
+  font-family: OpenSans;
+  font-size: 15px;
+  line-height: 22px;
+  text-align: center;
+  color: #044c8c;
+}
+
+p {
+  text-align: center;
+  font-family: OpenSans;
+  font-size: 15px;
+  line-height: 22px;
+  text-align: center;
+  color: #044c8c;
+  padding: 0% 5% 3% 5%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+::placeholder {
+  color: #044c8c;
+}
+
+input {
+  outline: none;
+  font-family: OpenSans;
+  font-size: 15px;
+  border-style: none;
+  border-bottom: 1px solid #fd5f00;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+#loginBotao {
+  color: #044c8c;
+  margin-bottom: 2%;
+  background: #ffffff;
+  border: 1px solid #fd5f00;
+  box-sizing: border-box;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  width: 35%;
+  padding: 1%;
+  cursor: pointer;
+}
+
+#loginBotao:hover {
+  background-color: #fcc29e;
+}
+#loginBotao:active {
+  background-color: #fd995b;
+}
